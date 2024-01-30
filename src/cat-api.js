@@ -1,6 +1,4 @@
 import axios from 'axios';
-import iziToast from 'izitoast';
-import 'izitoast/dist/css/iziToast.min.css';
 
 axios.defaults.headers.common['x-api-key'] =
   'live_irHtt3V8BrTGwkXWLI8iNhKiq5Mjia2e5QWJF9QV3w8S7qeRvaIuzpJtDhIIrhEx';

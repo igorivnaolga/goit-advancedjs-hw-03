@@ -25,18 +25,20 @@ function markup(arr) {
     .join('');
 }
 
-fetchBreeds().then(data => {
-  // console.log(data);
-  if (!data) {
-    throw new Error();
-  }
-  breedSelect.insertAdjacentHTML('beforeend', markup(data));
-  loader.hidden = true;
-  breedSelect.hidden = false;
-  new SlimSelect({
-    select: breedSelect,
-  });
-});
+fetchBreeds()
+  .then(data => {
+    // console.log(data);
+    if (!data) {
+      throw new Error();
+    }
+    breedSelect.insertAdjacentHTML('beforeend', markup(data));
+    loader.hidden = true;
+    breedSelect.hidden = false;
+    new SlimSelect({
+      select: breedSelect,
+    });
+  })
+  .catch(err => console.log(err));
 
 //** Коли я залишаю цей кетч, то при перезагрузці сторінки відразу викидає повідомлення 'Oops! Something went wrong! Try reloading the page!', хоча помилки немає. Але як тоді зловити помилку, яку я викинула в зені? Чи її не потрібно ловити тут? */
 
