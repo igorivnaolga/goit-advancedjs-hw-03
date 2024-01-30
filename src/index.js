@@ -25,22 +25,27 @@ function markup(arr) {
     .join('');
 }
 
-fetchBreeds()
-  .then(data => {
-    breedSelect.insertAdjacentHTML('beforeend', markup(data));
-    loader.hidden = true;
-    breedSelect.hidden = false;
-    new SlimSelect({
-      select: breedSelect,
-    });
-  })
+fetchBreeds().then(data => {
+  // console.log(data);
+  if (!data) {
+    throw new Error();
+  }
+  breedSelect.insertAdjacentHTML('beforeend', markup(data));
+  loader.hidden = true;
+  breedSelect.hidden = false;
+  new SlimSelect({
+    select: breedSelect,
+  });
+});
 
-  .catch(
-    err => console.log(err),
-    iziToast.error({
-      message: 'Oops! Something went wrong! Try reloading the page!',
-    })
-  );
+//** Коли я залишаю цей кетч, то при перезагрузці сторінки відразу викидає повідомлення 'Oops! Something went wrong! Try reloading the page!', хоча помилки немає. Але як тоді зловити помилку, яку я викинула в зені? Чи її не потрібно ловити тут? */
+
+// .catch(
+//   err => console.log(err),
+//   iziToast.error({
+//     message: 'Oops! Something went wrong! Try reloading the page!',
+//   })
+// );
 
 breedSelect.addEventListener('change', onChangeSelect);
 
@@ -51,15 +56,22 @@ function onChangeSelect() {
 
   fetchCatByBreed(breedSelect.value)
     .then(data => {
-      const img = data[0].url;
-      const name = data[0].breeds[0].name;
-      const description = data[0].breeds[0].description;
-      const temperament = data[0].breeds[0].temperament;
-
-      catInfo.innerHTML = createCatCard(img, name, description, temperament);
-      loader.hidden = true;
-      breedSelect.hidden = false;
-      catInfo.hidden = false;
+      if (data.length === 0) {
+        catInfo.innerHTML = '';
+        loader.hidden = true;
+        iziToast.error({
+          message: 'Oops! Information not found!',
+        });
+      } else {
+        const img = data[0].url;
+        const name = data[0].breeds[0].name;
+        const description = data[0].breeds[0].description;
+        const temperament = data[0].breeds[0].temperament;
+        catInfo.innerHTML = createCatCard(img, name, description, temperament);
+        loader.hidden = true;
+        breedSelect.hidden = false;
+        catInfo.hidden = false;
+      }
     })
     .catch(err => {
       iziToast.error({
