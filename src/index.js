@@ -46,15 +46,6 @@ fetchBreeds()
   })
   .finally(() => (loader.hidden = true));
 
-//** Коли я залишаю цей кетч, то при перезагрузці сторінки відразу викидає повідомлення 'Oops! Something went wrong! Try reloading the page!', хоча помилки немає. Але як тоді зловити помилку, яку я викинула в зені? Чи її не потрібно ловити тут? */
-
-// .catch(
-//   err => console.log(err),
-//   iziToast.error({
-//     message: 'Oops! Something went wrong! Try reloading the page!',
-//   })
-// );
-
 breedSelect.addEventListener('change', onChangeSelect);
 
 function onChangeSelect() {
